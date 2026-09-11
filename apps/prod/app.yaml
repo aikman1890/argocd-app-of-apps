@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prod-workloads
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: CHANGE_ME_gitops_repo_url
+    targetRevision: HEAD
+    path: apps/prod
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: prod
+  # Deliberately NO automated sync: prod deploys only when a human reviews
+  # the diff and presses sync (or approves via your change-control process).
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true

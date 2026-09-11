@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: per-cluster-workloads
+  namespace: argocd
+spec:
+  generators:
+    - clusters:
+        selector:
+          matchLabels:
+            argocd.argoproj.io/managed-by: argocd
+  template:
+    metadata:
+      name: "workloads-{{name}}"
+      namespace: argocd
+    spec:
+      project: default
+      source:
+        repoURL: CHANGE_ME_gitops_repo_url
+        targetRevision: HEAD
+        path: apps/{{metadata.labels.environment}}
+      destination:
+        server: "{{server}}"
+        namespace: workloads
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

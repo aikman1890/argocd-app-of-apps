@@ -1,0 +1,17 @@
+# Editor and OS artifacts
+.DS_Store
+*.swp
+*~
+
+# Local kubeconfigs and cluster credentials — never commit these
+kubeconfig
+*.kubeconfig
+.kube/
+
+# Argo CD CLI binaries and local caches
+argocd
+.argocd/
+
+# Environment-specific overrides kept out of Git
+*.local.yaml
+secrets/
